@@ -327,8 +327,6 @@ export function Dashboard({ userData, onTabChange }: DashboardProps) {
             </div>
           </div>
           <Button
-            variant="ghost"
-            size="sm"
             onClick={() => setShowWelcomeBanner(false)}
             className="text-white hover:bg-white/10 text-[11px]"
           >
@@ -472,8 +470,7 @@ export function Dashboard({ userData, onTabChange }: DashboardProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-400">💡 {rec.action}</span>
                   <Button 
-                    size="sm" 
-                    variant="outline"
+                    
                     className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20 h-8 text-xs"
                     onClick={() => {
                       playClick();
@@ -500,7 +497,7 @@ export function Dashboard({ userData, onTabChange }: DashboardProps) {
         </Button>
         <Button 
           onClick={() => onTabChange?.("ai-chat")}
-          variant="outline"
+          
           className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white shadow-lg transition-all duration-300 transform hover:scale-105 px-6 py-2.5 button-interactive"
         >
           <Zap className="w-4 h-4 mr-2" />
@@ -508,7 +505,7 @@ export function Dashboard({ userData, onTabChange }: DashboardProps) {
         </Button>
         <Button 
           onClick={() => onTabChange?.("progress")}
-          variant="outline"
+          
           className="border-green-500/30 text-green-300 hover:bg-green-500/20 hover:text-white shadow-lg transition-all duration-300 transform hover:scale-105 px-6 py-2.5 button-interactive"
         >
           <TrendingUp className="w-4 h-4 mr-2" />
@@ -597,7 +594,7 @@ export function Dashboard({ userData, onTabChange }: DashboardProps) {
                 ))}
                 <Button 
                   onClick={handleMealLog}
-                  variant="outline" 
+                  
                   className="w-full border-green-500/30 text-green-300 hover:bg-green-500/20 hover:text-white transition-all duration-300 mt-4 button-interactive"
                 >
                   <Apple className="w-4 h-4 mr-2" />
@@ -642,7 +639,6 @@ export function Dashboard({ userData, onTabChange }: DashboardProps) {
                 </div>
                 <Button 
                   onClick={() => onTabChange?.("ai-chat")}
-                  variant="outline" 
                   className="w-full border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white transition-all duration-300 button-interactive"
                 >
                   <MessageSquare className="w-4 h-4 mr-2" />
@@ -741,8 +737,7 @@ export function Dashboard({ userData, onTabChange }: DashboardProps) {
                       {goal.type}
                     </CardTitle>
                     <Button
-                      size="sm"
-                      variant="ghost"
+                      
                       className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 h-8"
                       onClick={() => {
                         playClick();

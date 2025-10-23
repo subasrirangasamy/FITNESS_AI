@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fitness AI Backend Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #f5f5f5;
+    }
+    h1 { color: #333; }
+    .section {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    label { display: block; margin-top: 10px; }
+    input { padding: 5px; width: 100%; margin-top: 5px; }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      background: #007bff;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover { background: #0056b3; }
+    .log { margin-top: 10px; background: #eee; padding: 10px; border-radius: 5px; max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+
+<h1>Fitness AI Backend Test</h1>
+
+<div class="section">
+  <h2>Register User</h2>
+  <label>Name:</label><input id="name" type="text" placeholder="Alice">
+  <label>Email:</label><input id="email" type="email" placeholder="alice@example.com">
+  <label>Password:</label><input id="password" type="password" placeholder="123456">
+  <label>Age:</label><input id="age" type="number" placeholder="25">
+  <label>Weight (kg):</label><input id="weight" type="number" placeholder="60">
+  <label>Height (cm):</label><input id="height" type="number" placeholder="165">
+  <label>Gender:</label><input id="gender" type="text" placeholder="female">
+  <button onclick="registerUser()">Register User</button>
+</div>
+
+<div class="section">
+  <h2>Add Workout</h2>
+  <label>Workout Type:</label><input id="workoutType" type="text" placeholder="Cardio">
+  <label>Duration (minutes):</label><input id="duration" type="number" placeholder="45">
+  <label>Calories Burned:</label><input id="calories" type="number" placeholder="350">
+  <button onclick="addWorkout()">Add Workout</button>
+</div>
+
+<div class="section">
+  <h2>Get Workouts</h2>
+  <button onclick="getWorkouts()">Fetch Workouts</button>
+</div>
+
+<div class="section">
+  <h2>Logs</h2>
+  <div class="log" id="log"></div>
+</div>
+
+<script>
+  let userId = "";
+  const logDiv = document.getElementById("log");
+
+  function log(message) {
+    console.log(message);
+    logDiv.innerHTML += message + "<br>";
+    logDiv.scrollTop = logDiv.scrollHeight;
+  }
+
+  async function registerUser() {
+    try {
+      const res = await fetch('http://localhost:5000/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+          age: Number(document.getElementById('age').value),
+          weight: Number(document.getElementById('weight').value),
+          height: Number(document.getElementById('height').value),
+          gender: document.getElementById('gender').value
+        })
+      });
+
+      const data = await res.json();
+
+      if(res.ok) {
+        userId = data._id;
+        alert("✅ User Registered! ID: " + userId);
+        log("User Registered: " + JSON.stringify(data));
+      } else {
+        alert("❌ Registration Failed!");
+        log("Registration Error: " + JSON.stringify(data));
+      }
+
+    } catch(err) {
+      alert("❌ Error: " + err.message);
+      log("Error: " + err.message);
+    }
+  }
+
+  async function addWorkout() {
+    if(!userId) { alert("Register a user first!"); return; }
+
+    try {
+      const res = await fetch('http://localhost:5000/api/workouts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user: userId,
+          workoutType: document.getElementById('workoutType').value,
+          duration: Number(document.getElementById('duration').value),
+          caloriesBurned: Number(document.getElementById('calories').value)
+        })
+      });
+
+      const data = await res.json();
+
+      if(res.ok) {
+        alert("✅ Workout Added!");
+        log("Workout Added: " + JSON.stringify(data));
+      } else {
+        alert("❌ Failed to Add Workout");
+        log("Workout Error: " + JSON.stringify(data));
+      }
+
+    } catch(err) {
+      alert("❌ Error: " + err.message);
+      log("Error: " + err.message);
+    }
+  }
+
+  async function getWorkouts() {
+    if(!userId) { alert("Register a user first!"); return; }
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/workouts/${userId}`);
+      const data = await res.json();
+
+      if(res.ok) {
+        alert("✅ Workouts Fetched! Check log below.");
+        log("User Workouts: " + JSON.stringify(data));
+      } else {
+        alert("❌ Failed to Fetch Workouts");
+        log("Fetch Error: " + JSON.stringify(data));
+      }
+
+    } catch(err) {
+      alert("❌ Error: " + err.message);
+      log("Error: " + err.message);
+    }
+  }
+</script>
+
+</body>
+</html>
